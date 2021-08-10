@@ -1,0 +1,205 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>SICOS</title>
+        
+        <!--init librerias por defecto -->
+        <link href="{% static 'dist/css/styles.css' %}" rel="stylesheet" />
+        <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
+        <link href="{% static 'css2/estilos.css' %}"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js" crossorigin="anonymous"></script>
+        <!--end librerias por defecto -->
+
+        <!--init estas librerias son para los graficos de hicharts -->
+        <script src="{% static 'librerias/code/highcharts.js' %}"></script>
+        <script src="{% static 'librerias/code/modules/exporting.js' %}"></script>
+        <script src="{% static 'librerias/code/modules/export-data.j' %}s"></script>
+        <script src="{% static 'librerias/code/modules/accessibility.js' %}"></script>
+        <!--end estas librerias son para los graficos de hicharts -->
+
+
+        <!--init alertas de error -->
+        <script src="{% static 'librerias/sweetalert2/dist/sweetalert2.all.min.js' %}"></script>
+        <script src="{% static 'librerias/sweetalert2/dist/sweetalert2.min.js' %}"></script>
+        <link rel="stylesheet" href="{% static 'librerias/sweetalert2/dist/sweetalert2.min.css' %}">
+        <!--init alertas de error -->
+
+        <!-- init estilos personalizados -->
+        <style>
+            .color{
+                background: rgb(11, 100, 11);
+                color: #fff;
+            }
+            .color_texto{
+                color: rgb(11, 100, 11);
+            }
+
+        </style>
+        <!-- end estilos personalizados -->
+
+        <script>
+            function SuccessSendMail(){
+                var mensaje = confirm("¿Estas Seguro de Enviar los Correos Faltantes?");
+                return mensaje
+            }
+        </script>
+
+
+    </head>
+    <body class="sb-nav-fixed">
+        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">MASS MESSAGES</a>
+            <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
+        
+        </nav>
+
+        <div id="layoutSidenav">
+            
+            <div id="layoutSidenav_content">
+
+                {% block content %}
+                    <main>
+                        <div class="container-fluid">
+                            <h1 class="mt-4">Dashboard</h1>
+
+
+                            <a onclick="return SuccessSendMail();" class="btn btn-primary" href="{% url 'EnviarMailAuto' %}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-arrow-up-circle-fill" viewBox="0 0 16 16">
+                                    <path d="M16 8A8 8 0 1 0 0 8a8 8 0 0 0 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z" />
+                                </svg>
+                                Enviar Correos
+                            </a>
+                            
+                            <a class="btn btn-success" href="{% url 'report_SendMail_excel' %}"><i class="fas fa-file-excel"></i> Exportar Excel</a>
+                            <hr>
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <i class="fas fa-table"></i>
+                                    Registro Correos Enviados
+                                </div>
+                            
+                                {%if ListMails %}
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                            
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <table class="table table-bordered dataTable table table-hover" id="dataTable" width="100%"
+                                                    cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
+                                                    <thead>
+                                                        <tr role="row">
+                                                            <th class="sorting_asc" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
+                                                                aria-label="Name: activate to sort column descending" style="width: 71px;"
+                                                                aria-sort="ascending">
+                                                                <font style="vertical-align: inherit;">
+                                                                    <font style="vertical-align: inherit;">ID</font>
+                                                                </font>
+                                                            </th>
+                                                            <th class="sorting_asc" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
+                                                                aria-label="Name: activate to sort column descending" style="width: 71px;"
+                                                                aria-sort="ascending">
+                                                                <font style="vertical-align: inherit;">
+                                                                    <font style="vertical-align: inherit;">Numero_de_Factura</font>
+                                                                </font>
+                                                            </th>
+                                                            <th class="sorting_asc" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
+                                                                aria-label="Name: activate to sort column descending" style="width: 71px;"
+                                                                aria-sort="ascending">
+                                                                <font style="vertical-align: inherit;">
+                                                                    <font style="vertical-align: inherit;">Fecha_de_Envio</font>
+                                                                </font>
+                                                            </th>
+                                                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
+                                                                aria-label="Office: activate to sort column ascending" style="width: 54px;">
+                                                                <font style="vertical-align: inherit;">
+                                                                    <font style="vertical-align: inherit;">Estado</font>
+                                                                </font>
+                                                            </th>
+                                                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
+                                                                aria-label="Office: activate to sort column ascending" style="width: 54px;">
+                                                                <font style="vertical-align: inherit;">
+                                                                    <font style="vertical-align: inherit;">Archivo</font>
+                                                                </font>
+                                                            </th>
+                                                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
+                                                                aria-label="Office: activate to sort column ascending" style="width: 54px;">
+                                                                <font style="vertical-align: inherit;">
+                                                                    <font style="vertical-align: inherit;">Ruta</font>
+                                                                </font>
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                            
+                                                    <tbody>
+                                                        {% for ListMail in ListMails %}
+                                                        <tr role="row" class="odd">
+                                                            <td class="sorting_1">
+                                                                <font style="vertical-align: inherit;">
+                                                                    <font style="vertical-align: inherit;">{{ListMail.id}}</font>
+                                                                </font>
+                                                            </td>
+                                                            <td class="sorting_1">
+                                                                <font style="vertical-align: inherit;">
+                                                                    <font style="vertical-align: inherit;">{{ListMail.numero_factura}}</font>
+                                                                </font>
+                                                            </td>
+                                                            <td>
+                                                                <font style="vertical-align: inherit;">
+                                                                    <font style="vertical-align: inherit;">
+                                                                        {{ListMail.fecha_envio}}</font>
+                                                                </font>
+                                                            </td>
+                                                            <td>
+                                                                <font style="vertical-align: inherit;">
+                                                                    <font style="vertical-align: inherit;">{{ ListMail.Estado}}</font>
+                                                                </font>
+                                                            </td>
+                                                            <td>
+                                                                <font style="vertical-align: inherit;">
+                                                                    <font style="vertical-align: inherit;">{{ListMail.archivo}}</font>
+                                                                </font>
+                                                            </td>
+                                                            <td>
+                                                                <font style="vertical-align: inherit;">
+                                                                    <font style="vertical-align: inherit;">{{ ListMail.ruta}}</font>
+                                                                </font>
+                                                            </td>
+                                                        </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {%else%}
+                                <div class="alert alert-dark" role="alert">
+                                    <h2>No se han enviado Correos</h2>
+                                </div>
+                                {% endif%}
+
+                        </div>
+                    </main>
+                {% endblock content %}
+               
+            </div>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="{% static 'dist/js/scripts.js' %}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+        <script src="{% static 'dist/assets/demo/chart-area-demo.js' %}"></script>
+        <script src="{% static 'dist/assets/demo/chart-bar-demo.js' %}"></script>
+        <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+        <script src="{% static 'dist/assets/demo/datatables-demo.js' %}"></script>
+    </body>
+</html>
